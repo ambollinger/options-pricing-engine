@@ -24,6 +24,9 @@ def gamma(S, K, T, r, sigma):
     numerator = norm.pdf(d1(S, K, T, r, sigma))
     denominator = S *sigma * np.sqrt(T)
     return numerator / denominator
+def vega(S, K, T, r, sigma):
+    return S * norm.pdf(d1(S, K, T, r, sigma))
+
 
 
 if __name__ == '__main__':
@@ -33,6 +36,7 @@ if __name__ == '__main__':
     print(put_price(100, 100, 1, 0.05, 0.2))
     print(delta(100, 100, 1, 0.05, 0.2))
     print(gamma(100, 100, 1, 0.05, 0.2))
+    print(vega(100, 100, 1, 0.05, 0.2))
 
 
 
