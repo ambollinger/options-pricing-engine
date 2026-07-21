@@ -20,6 +20,10 @@ def put_price(S, K, T, r, sigma):
 
 def delta(S, K, T, r, sigma):
     return norm.cdf(d1(S, K, T, r, sigma))
+def gamma(S, K, T, r, sigma):
+    numerator = norm.pdf(d1(S, K, T, r, sigma))
+    denominator = S *sigma * np.sqrt(T)
+    return numerator / denominator
 
 
 if __name__ == '__main__':
@@ -28,6 +32,7 @@ if __name__ == '__main__':
     print(call_price(100, 100, 1, 0.05, 0.2))
     print(put_price(100, 100, 1, 0.05, 0.2))
     print(delta(100, 100, 1, 0.05, 0.2))
+    print(gamma(100, 100, 1, 0.05, 0.2))
 
 
 
