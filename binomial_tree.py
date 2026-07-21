@@ -34,7 +34,26 @@ def binomial_price(S, K, T, r, sigma, n):
             new_values.append(value)
         values = new_values
     return values[0]
+def american_binomial_price(S, K, T, r, sigma, n):
+    dt = T / n
+    u, d = up_down_factors(sigma, dt)
+    p = risk_neutral_probability(r, dt, u, d)
 
+    prices = stock_price_tree(S, u, d, n)
+    values = call_payoff(prices, K)
+
+    for step in range(n):
+        new_values = []
+        current_n = n - step - 1
+        for i in range(len(values) - 1 ):
+            hold_value = np.exp(-r*dt) * (p * values[i+1] + (1-p) * values[i])
+            stock_price = S * (u ** i) * (d ** (current_n - 1))
+            exercise_value = max(stock_price - K, 0)
+            value = max(hold_value, exercise_value)
+            new_values.append(value)
+        values = new_values
+
+    return values[0]
 
 
 
@@ -46,4 +65,5 @@ if __name__ == "__main__":
     print(risk_neutral_probability(0.05, 0.01, 1.02, .98))
     print(call_payoff([94.12, 97.96, 101.96, 106.12], 100))
     print(binomial_price(100, 100, 1, 0.05, 0.2, 100))
+    print(american_binomial_price(100, 100, 1, 0.05, 0.2, 100))
 
