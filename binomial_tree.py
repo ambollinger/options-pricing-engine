@@ -11,7 +11,8 @@ def stock_price_tree(S, u, d, n):
         price = S * (u**j) * (d ** (n-j))
         prices.append(price)
     return prices
-
+def risk_neutral_probability(r, dt, u,d):
+    return (np.exp(r * dt) - d) / (u -d)
 
 
 
@@ -21,3 +22,4 @@ def stock_price_tree(S, u, d, n):
 if __name__ == "__main__":
     print(up_down_factors(0.2,0.01))
     print(stock_price_tree(100, 1.02, .98, 3))
+    print(risk_neutral_probability(0.05, 0.01, 1.02, .98))
