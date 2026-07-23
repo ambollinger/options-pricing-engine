@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import brentq
 from black_scholes import call_price
 import yfinance as yf
+from datetime import datetime
 
 
 def price_difference(sigma, S, K, T, r, market_price):
@@ -21,6 +22,24 @@ if __name__ == "__main__":
     expirations = ticker.options
     print(expirations)
 
-    chain = ticker.option_chain(expirations[0])
+    chain = ticker.option_chain(expirations[5])
     calls = chain.calls
     print(calls.head())
+
+    print(calls[['strike', 'lastPrice', 'impliedVolatility']].head(10))
+
+    row = calls.iloc[5]
+    K = row['strike']
+    market_price = row['lastPrice']
+
+    current_data = ticker.history(period="1d")
+    S = current_data['Close'].iloc[-1]
+
+    expiration_date = datetime.strptime(expirations[5], "%Y-%m-%d")
+    today = datetime.now()
+    T = (expiration_date - today).days / 365
+
+    r = 0.05
+
+    iv = find_implied_vol(S, K, T, r, market_price)
+    print(iv)
