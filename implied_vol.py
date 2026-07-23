@@ -20,3 +20,7 @@ if __name__ == "__main__":
     ticker = yf.Ticker("SPY")
     expirations = ticker.options
     print(expirations)
+
+    chain = ticker.option_chain(expirations[0])
+    calls = chain.calls
+    print(calls.head())
